@@ -1,61 +1,109 @@
 return {
 
-  { import = "lazyvim.plugins.extras.ai.copilot" },
-  { import = "lazyvim.plugins.extras.coding.mini-comment" },
-  { import = "lazyvim.plugins.extras.coding.mini-snippets" },
-  { import = "lazyvim.plugins.extras.coding.mini-surround" },
-  { import = "lazyvim.plugins.extras.dap.core" },
-  { import = "lazyvim.plugins.extras.dap.nlua" },
-  { import = "lazyvim.plugins.extras.lang.go" },
-  { import = "lazyvim.plugins.extras.lang.git" },
-  { import = "lazyvim.plugins.extras.lang.json" },
-  { import = "lazyvim.plugins.extras.lang.markdown" },
-  { import = "lazyvim.plugins.extras.lang.php" },
-  { import = "lazyvim.plugins.extras.lang.python" },
-  { import = "lazyvim.plugins.extras.lang.sql" },
-  { import = "lazyvim.plugins.extras.lang.tailwind" },
-  { import = "lazyvim.plugins.extras.lang.typescript" },
-  { import = "lazyvim.plugins.extras.lang.yaml" },
-  { import = "lazyvim.plugins.extras.linting.eslint" },
-  { import = "lazyvim.plugins.extras.util.mini-hipatterns" },
+  -- ========================
+  -- Core LazyVim
+  -- ========================
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "tokyonight",
+    },
+  },
 
-  -- since `vim.tbl_deep_extend`, can only merge tables and not lists, the code above
-  -- would overwrite `ensure_installed` with the new value.
-  -- If you'd rather extend the default config, use the code below instead:
+  -- ========================
+  -- Infra avancée (niveau 2)
+  -- ========================
+
+  -- Kubernetes / Helm
+  {
+    "h4ckm1n-dev/kube-utils-nvim",
+    config = true,
+  },
+
+  -- Docker
+  {
+    "ekalinin/Dockerfile.vim",
+  },
+
+  -- SSH remote editing
+  {
+    "inhesrom/remote-ssh.nvim",
+    config = true,
+  },
+
+  -- ========================
+  -- Git amélioré
+  -- ========================
+  {
+    "lewis6991/gitsigns.nvim",
+    opts = {
+      current_line_blame = true,
+    },
+  },
+
+  {
+    "mikavilpas/yazi.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    keys = {
+      {
+        "<leader>-",
+        mode = { "n", "v" },
+        "<cmd>Yazi<cr>",
+        desc = "Open Yazi",
+      },
+      {
+        "<leader>cw",
+        "<cmd>Yazi cwd<cr>",
+        desc = "Yazi (cwd)",
+      },
+    },
+    opts = {
+      open_for_directories = false,
+    },
+  },
+
+  -- ========================
+  -- Treesitter (langages utiles)
+  -- ========================
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      -- add tsx and treesitter
       vim.list_extend(opts.ensure_installed, {
         "bash",
-        "html",
-        "javascript",
-        "json",
-        "lua",
-        "markdown",
-        "markdown_inline",
+        "go",
         "python",
-        "query",
-        "regex",
-        "tsx",
-        "typescript",
-        "vim",
+        "lua",
         "yaml",
+        "json",
+        "dockerfile",
+        "terraform",
+        "hcl",
       })
     end,
   },
 
+  -- ========================
+  -- Mason (tools système)
+  -- ========================
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     opts = {
       ensure_installed = {
+        -- LSP
         "bash-language-server",
-        "flake8",
+        "gopls",
+        "pyright",
+        "ansible-language-server",
+
+        -- format / lint
         "stylua",
-        "shellcheck",
         "shfmt",
-        "ts-standard",
-        "typescript-language-server",
+        "shellcheck",
+        "yamllint",
+        "ansible-lint",
       },
     },
   },
